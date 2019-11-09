@@ -1,47 +1,35 @@
 require("dotenv").config();
-var express = require("express");
-var exphbs = require("express-handlebars");
+const express = require("express");
+const path = require ("path");
+const { buildSchema } = require('graphql');
+const graphqlHTTP = require('express-graphql');
 
+// Temp db
 var db = require("./models");
 
-var app = express();
-var PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
-
-// Handlebars
-app.engine(
-  "handlebars",
-  exphbs({
-    defaultLayout: "main"
-  })
-);
-app.set("view engine", "handlebars");
 
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-var syncOptions = { force: false };
 
-// If running a test, set syncOptions.force to true
-// clearing the `testdb`
-if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
-}
+// Starting the server
 
-// Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(function() {
-  app.listen(PORT, function() {
-    console.log(
-      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
-      PORT,
-      PORT
-    );
-  });
-});
+app.use('/graphql', graphqlHTTP({
+  schema: typeDefs,
+  rootValue: root,
+  graphiql: true,
+}));
+
+app.listen(PORT);
+console.log(`Running a server at localhost:${PORT}}`);
+console.log(`Running a GraphQL API server at localhost:${PORT}/data`);
 
 module.exports = app;
