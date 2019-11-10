@@ -1,63 +1,57 @@
 import React, { Component } from "react";
-
+import axios from "axios";
+import { Link } from "react-router-dom";
 class DashBoard extends Component {
+  state = {
+    restaurantID: null,
+    searchValue: null,
+    resList: null
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    axios
+      .get(
+        `https://eatstreet.com/publicapi/v1/restaurant/search?method=both&search=${this.state.searchValue}&street-address=Boston,+MA`,
+        {
+          headers: {
+            "X-Access-Token": "09eacd7f66391c84"
+          }
+        }
+      )
+      .then(res => {
+        // add 10 restaurants to the resList
+        this.setState({
+          ...this.state,
+          resList: res.data.restaurants.slice(10)
+        });
+      });
+  };
+
   render() {
+    const { resList } = this.state;
     return (
-      <div>
-        <ul class="sidebar navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-              <i class="fas fa-fw fa-tachometer-alt"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="pagesDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fas fa-fw fa-folder"></i>
-              <span>Pages</span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-              <h6 class="dropdown-header">Login Screens:</h6>
-              <a class="dropdown-item" href="login.html">
-                Login
-              </a>
-              <a class="dropdown-item" href="register.html">
-                Register
-              </a>
-              <a class="dropdown-item" href="forgot-password.html">
-                Forgot Password
-              </a>
-              <div class="dropdown-divider"></div>
-              <h6 class="dropdown-header">Other Pages:</h6>
-              <a class="dropdown-item" href="404.html">
-                404 Page
-              </a>
-              <a class="dropdown-item" href="blank.html">
-                Blank Page
-              </a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Charts</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-              <i class="fas fa-fw fa-table"></i>
-              <span>Tables</span>
-            </a>
-          </li>
-        </ul>
+      <div className="container">
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" id="searchValue" onChange={this.handleChange} />
+        </form>
+        {resList
+          ? resList.map(restaurant => {
+              return (
+                <div key={restaurant.apiKey}>
+                  <img src={restaurant.logoUrl} alt={restaurant.phone} />
+                  <Link to={"/r/" + restaurant.apiKey}>{restaurant.name}</Link>
+                  <br />
+                </div>
+              );
+            })
+          : null}
       </div>
     );
   }
