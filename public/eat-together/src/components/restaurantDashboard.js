@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addRestaurantID } from "../store/actions/restaurantActions";
 import axios from "axios";
 
 import Item from "./item";
@@ -28,6 +30,7 @@ class RestaurantDashboard extends Component {
           categoryList: res.data.slice(0, 2)
         });
       });
+    this.props.addRestaurantID(id);
   }
 
   addToCart = item => {
@@ -64,4 +67,18 @@ class RestaurantDashboard extends Component {
   }
 }
 
-export default RestaurantDashboard;
+// const mapStateToProps = (state) =>
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addRestaurantID: resID => {
+      console.log(resID);
+      dispatch(addRestaurantID(resID));
+    }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(RestaurantDashboard);
