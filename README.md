@@ -3,4 +3,5 @@ Using the EatStreet.com API, we created an easy way to order within a group sett
 
 ## To-do
 [x] - Implement account based login and group accounts
+
 [x] - Secure API transactions online
