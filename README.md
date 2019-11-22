@@ -1,6 +1,6 @@
 ![Eat Together](https://i.ibb.co/cJKF2jv/Untitled.png)
 
-#Eat Together
+# Eat Together
 Eat Together currently in its development phrase and is currently not working.
 It is deployed on Firebase. Please check it out [here](https://eattogether-aa042.firebaseapp.com).
 
