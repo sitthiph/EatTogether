@@ -16,7 +16,7 @@ Connecting the backend to the frontend was dificult to do because of the limitat
 ## What's next for Eat Together
 In the future, we want to utilize an account feature to only allow one person to checkout, and give easier access to creating group orders. We want to implement saved groups that could log in and ping to create a new order and allow everyone to join in without using the code each time.
 
-### Technology Used
+## Technology Used
 
 * React/Redux
 * Firebase
