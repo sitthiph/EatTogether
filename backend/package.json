@@ -37,7 +37,7 @@
   "devDependencies": {
     "cross-env": "6.0.3",
     "firebase-functions-test": "0.1.7",
-    "mocha": "6.2.2",
+    "mocha": "10.2.0",
     "node-mocks-http": "1.8.0",
     "nodemon": "1.19.4"
   }
